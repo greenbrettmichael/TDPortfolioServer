@@ -1,6 +1,15 @@
 version: "3"
 services:
-    web:
-        build: ./src
-        ports: ['5000:5000']
-        volumes: ['./src:/app']
+    selenium:
+        image: selenium/standalone-chrome
+        ports:
+        - 4444:4444
+    tdportfolioserver:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports: 
+            - 5000:5000
+            - 5678:5678
+        volumes:
+            - .:/app:cached
