@@ -15,9 +15,9 @@ def make_webdriver():
     return browser
 
 @app.route("/")
-def hello():
-    tda.auth.easy_client(current_app.config["TDAMERITRADE_CLIENT_ID"], current_app.config["REDIRECT_URI"], current_app.config["PATH_TO_TOKEN"], make_webdriver)
-    return render_template("whale_hello.html")
+def home():
+    tdaClient = tda.auth.easy_client(current_app.config["TDAMERITRADE_CLIENT_ID"], current_app.config["REDIRECT_URI"], current_app.config["PATH_TO_TOKEN"], make_webdriver)
+    return render_template("home.html")
 
 if __name__ == '__main__':
     project_folder = os.path.dirname(os.path.abspath(__file__))
