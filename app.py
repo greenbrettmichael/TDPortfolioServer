@@ -2,14 +2,22 @@ from flask import Flask, render_template, current_app
 import os,sys
 from dotenv import load_dotenv
 import tda
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import atexit
 
 app = Flask(__name__)
 
+def make_webdriver():
+    from selenium import webdriver
+    from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
+    browser = webdriver.Remote("http://selenium:4444/wd/hub", DesiredCapabilities.CHROME)
+    atexit.register(lambda: browser.quit())
+    return browser
+
 @app.route("/")
 def hello():
-    tda.auth.easy_client(current_app.config["TDAMERITRADE_CLIENT_ID"], current_app.config["REDIRECT_URI"], current_app.config["PATH_TO_TOKEN"], webdriver.Remote("http://0.0.0.0:4444/wd/hub", DesiredCapabilities.CHROME))
+    tda.auth.easy_client(current_app.config["TDAMERITRADE_CLIENT_ID"], current_app.config["REDIRECT_URI"], current_app.config["PATH_TO_TOKEN"], make_webdriver)
+    #c = tda.auth.client_from_login_flow(browser, current_app.config["TDAMERITRADE_CLIENT_ID"], current_app.config["REDIRECT_URI"], current_app.config["PATH_TO_TOKEN"])
     return render_template("whale_hello.html")
 
 if __name__ == '__main__':
