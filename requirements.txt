@@ -1,4 +1,4 @@
 python-dotenv==0.13.0
 tda-api==0.3.2
 Flask==1.1.2
-Jinja2==2.11.2
+Jinja2==2.11.3
